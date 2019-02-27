@@ -5,6 +5,8 @@ import android.os.Bundle
 import com.android.volley.Response
 import com.poofinc.boardgameatlas.R
 import com.poofinc.boardgameatlas.core.game.SearchRequest
+import com.poofinc.boardgameatlas.data.search.Order
+import com.poofinc.boardgameatlas.ui.fragment.HomeFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,6 +14,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
+        supportFragmentManager.beginTransaction()
+                .add(R.id.fragment_holder, HomeFragment())
+                .commit();
     }
 }

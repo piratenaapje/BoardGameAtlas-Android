@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Explorer for Board Game Atlas</string>
+    <string name="trending">Trending</string>
 </resources>

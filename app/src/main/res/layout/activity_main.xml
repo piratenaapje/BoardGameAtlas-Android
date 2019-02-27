@@ -11,4 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/action_bar_height"></RelativeLayout>
 
+    <FrameLayout
+        android:id="@+id/fragment_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+
 </RelativeLayout>

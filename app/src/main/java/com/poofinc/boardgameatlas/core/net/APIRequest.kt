@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken
 import com.poofinc.boardgameatlas.core.API
 import com.poofinc.boardgameatlas.data.game.Game
 import java.lang.reflect.Type
+import java.net.URLEncoder
 
 abstract class APIRequest<T> {
     abstract var apiPath: String
@@ -13,6 +14,8 @@ abstract class APIRequest<T> {
     open var type: Type? = null
     open var responseListener: Response.Listener<T> = Response.Listener {  }
     open var errorListener: Response.ErrorListener = Response.ErrorListener {  }
+
+    var firstParameter = true
 
     open fun execute() {
         var url = API.location + apiPath + "&client_id=" + API.clientId
@@ -30,6 +33,17 @@ abstract class APIRequest<T> {
 
     fun onSuccess(listener: Response.Listener<T>) : APIRequest<T> {
         responseListener = listener
+        return this
+    }
+
+    fun addParameter(key: String, value: String) : APIRequest<T> {
+        if (firstParameter) {
+            apiPath += "?"
+        } else {
+            apiPath += "&"
+        }
+        apiPath += URLEncoder.encode(key) + "=" + URLEncoder.encode(value)
+        firstParameter = false
         return this
     }
 }
