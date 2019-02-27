@@ -16,7 +16,7 @@ class SearchRequest : APIRequest<SearchResponse>() {
     var order: Order? = null
     private var minRedditWeekCount: Int? = null
     private var maxRedditCount: Int? = null
-    private var minAverageUserRating: Int? = null
+    private var minAverageUserRating: Float? = null
 
     fun order(value: Order) : SearchRequest {
         order = value
@@ -33,7 +33,7 @@ class SearchRequest : APIRequest<SearchResponse>() {
         return this
     }
 
-    fun minAverageUserRating(value: Int) : SearchRequest {
+    fun minAverageUserRating(value: Float) : SearchRequest {
         minAverageUserRating = value
         return this
     }

@@ -1,8 +1,11 @@
 package com.poofinc.boardgameatlas.data.game
 
 import com.google.gson.annotations.SerializedName
+import com.poofinc.boardgameatlas.data.DataObject
+import com.poofinc.boardgameatlas.data.DataType
 
-class Game {
+class Game : DataObject() {
+    override var type: DataType = DataType.GAME
     var id: String? = null
     var name: String? = null
     var names: ArrayList<String>? = null
