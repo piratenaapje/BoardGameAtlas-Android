@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="action_bar_height">60dp</dimen>
-    <dimen name="card_game_height">130dp</dimen>
+    <dimen name="card_game_height">155dp</dimen>
     <dimen name="card_game_width">150dp</dimen>
 </resources>

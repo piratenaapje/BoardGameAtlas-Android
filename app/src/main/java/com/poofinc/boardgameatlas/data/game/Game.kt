@@ -38,4 +38,5 @@ class Game : DataObject() {
     var designers: ArrayList<String>? = null
     var developers: ArrayList<String>? = null
     var artists: ArrayList<String>? = null
+    var average_user_rating: Float? = null
 }

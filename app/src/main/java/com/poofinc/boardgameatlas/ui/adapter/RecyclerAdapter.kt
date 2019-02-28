@@ -36,6 +36,10 @@ class RecyclerAdapter(var items: ArrayList<DataObject>) : RecyclerView.Adapter<R
                 var vh = viewHolder as GameViewHolder
                 var item = items[position] as Game
                 Glide.with(vh.imageView).load(item.imageUrl).into(vh.imageView)
+                vh.title.text = item.name
+                if (item.average_user_rating != null) {
+                    vh.rating.rating = item.average_user_rating!!
+                }
             }
         }
     }
