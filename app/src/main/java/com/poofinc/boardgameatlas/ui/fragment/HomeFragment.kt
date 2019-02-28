@@ -10,37 +10,43 @@ import android.view.ViewGroup
 import com.android.volley.Response
 import com.poofinc.boardgameatlas.R
 import com.poofinc.boardgameatlas.core.game.SearchRequest
+import com.poofinc.boardgameatlas.core.net.APIRequest
+import com.poofinc.boardgameatlas.core.video.VideoRequest
+import com.poofinc.boardgameatlas.data.APIResponse
 import com.poofinc.boardgameatlas.data.DataObject
+import com.poofinc.boardgameatlas.data.DataType
+import com.poofinc.boardgameatlas.data.Request
 import com.poofinc.boardgameatlas.data.search.Order
+import com.poofinc.boardgameatlas.ui.MainFragment
 import com.poofinc.boardgameatlas.ui.adapter.RecyclerAdapter
 
-class HomeFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.home_fragment, container, false)
+class HomeFragment : MainFragment() {
+    override var requests: ArrayList<Request>
+        get() {
+            var result = ArrayList<Request>()
+            var request = Request()
+            request.title = "Trending"
+            request.type = DataType.GAME
+            request.request = SearchRequest().order(Order.REDDIT_DAY_COUNT)
+                    .maxRedditCount(200)
+                    .minRedditWeekCount(1)
+                    .minAverageUserRating(3.5f) as APIRequest<APIResponse>
+            result.add(request)
 
-        initializeContent(v)
+            request = Request()
+            request.title = "Most Popular"
+            request.type = DataType.GAME
+            request.request = SearchRequest().order(Order.POPULARITY) as APIRequest<APIResponse>
+            result.add(request)
 
-        return v
-    }
 
-    private fun initializeContent(v: View) {
-        getTrending(v)
-    }
+            request = Request()
+            request.title = "Recent Videos"
+            request.type = DataType.VIDEO
+            request.request = VideoRequest() as APIRequest<APIResponse>
+            result.add(request)
+            return result
+        }
+        set(value) {}
 
-    private fun getTrending(v: View) {
-        SearchRequest().order(Order.REDDIT_DAY_COUNT)
-                .maxRedditCount(200)
-                .minRedditWeekCount(1)
-                .minAverageUserRating(3.5f)
-                .onSuccess(Response.Listener {
-                    val viewManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-                    val viewAdapter = RecyclerAdapter(it.games as ArrayList<DataObject>)
-
-                    v.findViewById<RecyclerView>(R.id.recyclerview_trending).apply {
-                        setHasFixedSize(true)
-                        layoutManager = viewManager
-                        adapter = viewAdapter
-                    }
-                }).execute()
-    }
 }
