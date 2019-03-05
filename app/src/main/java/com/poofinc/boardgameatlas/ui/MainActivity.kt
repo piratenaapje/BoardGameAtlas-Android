@@ -18,11 +18,6 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_holder, HomeFragment())
                 .commit();
-
-        setTitle("Home")
     }
 
-    private fun setTitle(title: String) {
-        action_bar_title.text = title
-    }
 }
