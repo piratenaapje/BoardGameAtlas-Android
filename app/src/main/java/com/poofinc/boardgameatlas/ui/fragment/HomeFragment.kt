@@ -45,6 +45,13 @@ class HomeFragment : MainFragment() {
             request.type = DataType.VIDEO
             request.request = VideoRequest() as APIRequest<APIResponse>
             result.add(request)
+
+
+            request = Request()
+            request.title = "Latest kickstarters"
+            request.type = DataType.KICKSTARTER
+            request.request = SearchRequest().kickstarter() as APIRequest<APIResponse>
+            result.add(request)
             return result
         }
         set(value) {}

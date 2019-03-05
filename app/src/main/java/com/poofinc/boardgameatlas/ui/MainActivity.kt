@@ -7,6 +7,7 @@ import com.poofinc.boardgameatlas.R
 import com.poofinc.boardgameatlas.core.game.SearchRequest
 import com.poofinc.boardgameatlas.data.search.Order
 import com.poofinc.boardgameatlas.ui.fragment.HomeFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,5 +18,11 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_holder, HomeFragment())
                 .commit();
+
+        setTitle("Home")
+    }
+
+    private fun setTitle(title: String) {
+        action_bar_title.text = title
     }
 }

@@ -1,11 +1,19 @@
 package com.poofinc.boardgameatlas.data.game
 
 import com.google.gson.annotations.SerializedName
+import com.google.gson.internal.bind.DateTypeAdapter
 import com.poofinc.boardgameatlas.data.DataObject
 import com.poofinc.boardgameatlas.data.DataType
+import java.util.*
 
 class Game : DataObject() {
     override var type: DataType = DataType.GAME
+    get() {
+        return when (kickstarter_url) {
+            null -> DataType.GAME
+            else -> DataType.KICKSTARTER
+        }
+    }
     var id: String? = null
     var name: String? = null
     var names: ArrayList<String>? = null
@@ -39,4 +47,8 @@ class Game : DataObject() {
     var developers: ArrayList<String>? = null
     var artists: ArrayList<String>? = null
     var average_user_rating: Float? = null
+    var kickstarter_url:String? = null
+    var kickstarter_pledge: String? = null
+    var kickstarter_goal: String? = null
+    var kickstarter_deadline: Date? = null
 }

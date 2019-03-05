@@ -17,6 +17,7 @@ class SearchRequest : APIRequest<SearchResponse>() {
     private var minRedditWeekCount: Int? = null
     private var maxRedditCount: Int? = null
     private var minAverageUserRating: Float? = null
+    private var kickstarter = false
 
     fun order(value: Order) : SearchRequest {
         order = value
@@ -38,6 +39,11 @@ class SearchRequest : APIRequest<SearchResponse>() {
         return this
     }
 
+    fun kickstarter() : SearchRequest {
+        kickstarter = true
+        return this
+    }
+
     override fun execute() {
         if (order != null) {
             addParameter("order_by", order!!.value)
@@ -50,6 +56,9 @@ class SearchRequest : APIRequest<SearchResponse>() {
         }
         if (minAverageUserRating != null) {
             addParameter("gt_average_user_rating", minAverageUserRating.toString())
+        }
+        if (kickstarter) {
+            addParameter("kickstarter", "true")
         }
         super.execute()
     }

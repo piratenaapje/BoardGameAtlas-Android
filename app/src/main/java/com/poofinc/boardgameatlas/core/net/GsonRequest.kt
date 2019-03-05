@@ -49,6 +49,7 @@ class GsonRequest<T>(
                         HttpHeaderParser.parseCacheHeaders(response))
             }
         } catch (e: Exception) {
+            System.out.println(e)
             return Response.error(ParseError(e))
         }
         return Response.error(null)
