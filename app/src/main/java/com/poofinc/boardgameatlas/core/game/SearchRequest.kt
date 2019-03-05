@@ -18,6 +18,7 @@ class SearchRequest : APIRequest<SearchResponse>() {
     private var maxRedditCount: Int? = null
     private var minAverageUserRating: Float? = null
     private var kickstarter = false
+    private var ascending = false
 
     fun order(value: Order) : SearchRequest {
         order = value
@@ -44,6 +45,11 @@ class SearchRequest : APIRequest<SearchResponse>() {
         return this
     }
 
+    fun ascending() : SearchRequest {
+        ascending = true
+        return this
+    }
+
     override fun execute() {
         if (order != null) {
             addParameter("order_by", order!!.value)
@@ -60,6 +66,7 @@ class SearchRequest : APIRequest<SearchResponse>() {
         if (kickstarter) {
             addParameter("kickstarter", "true")
         }
+        addParameter("ascending", ascending.toString())
         super.execute()
     }
 }

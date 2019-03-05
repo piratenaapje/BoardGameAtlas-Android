@@ -51,4 +51,5 @@ class Game : DataObject() {
     var kickstarter_pledge: String? = null
     var kickstarter_goal: String? = null
     var kickstarter_deadline: Date? = null
+    var kickstarter_percent: Int? = null
 }

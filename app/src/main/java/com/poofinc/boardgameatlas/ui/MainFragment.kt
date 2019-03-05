@@ -1,5 +1,6 @@
 package com.poofinc.boardgameatlas.ui
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -41,7 +42,7 @@ abstract class MainFragment : Fragment() {
             request.request.onSuccess(Response.Listener {
                 var viewManager = LinearLayoutManager(recyclerView.context, RecyclerView.HORIZONTAL, false)
                 if (it.getItems() != null) {
-                    var viewAdapter = RecyclerAdapter(it.getItems()!!)
+                    var viewAdapter = RecyclerAdapter(it.getItems()!!, this.activity as Activity)
                     recyclerView.layoutManager = viewManager
                     recyclerView.adapter = viewAdapter
                 }

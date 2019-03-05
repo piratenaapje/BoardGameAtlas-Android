@@ -1,5 +1,8 @@
 package com.poofinc.boardgameatlas.ui.adapter
 
+import android.app.Activity
+import android.net.Uri
+import android.support.customtabs.CustomTabsIntent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -17,7 +20,7 @@ import com.poofinc.boardgameatlas.ui.adapter.viewholder.VideoViewHolder
 
 
 
-class RecyclerAdapter(var items: ArrayList<DataObject>) : RecyclerView.Adapter<RecyclerViewHolder>() {
+class RecyclerAdapter(var items: ArrayList<DataObject>, var activity: Activity) : RecyclerView.Adapter<RecyclerViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): RecyclerViewHolder {
         when (items[position].type) {
             DataType.GAME-> {
@@ -44,6 +47,7 @@ class RecyclerAdapter(var items: ArrayList<DataObject>) : RecyclerView.Adapter<R
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerViewHolder, position: Int) {
+        setClickListener(viewHolder, position)
         when (items[position].type) {
             DataType.GAME-> {
                 var vh = viewHolder as GameViewHolder
@@ -59,7 +63,16 @@ class RecyclerAdapter(var items: ArrayList<DataObject>) : RecyclerView.Adapter<R
                 var item = items[position] as Game
                 Glide.with(vh.imageView).load(item.imageUrl).into(vh.imageView)
                 vh.title.text = item.name
-                vh.goal.text = "Goal: " + item.kickstarter_pledge + " of " + item.kickstarter_goal
+
+                if (item.kickstarter_pledge != null && item.kickstarter_pledge!!.contains('.')) {
+                    item.kickstarter_pledge = item.kickstarter_pledge!!.substring(0, item.kickstarter_pledge!!.indexOf('.'))
+                }
+                vh.goal.text = "$" + item.kickstarter_pledge + "/" + item.kickstarter_goal
+                if (item.kickstarter_percent != null && item.kickstarter_percent!! >= 100) {
+                    vh.goal.setTextColor(vh.itemView.resources.getColor(R.color.green))
+                } else {
+                    vh.goal.setTextColor(vh.itemView.resources.getColor(R.color.gray))
+                }
 
                 if (item.kickstarter_deadline != null) {
                     val diff = item.kickstarter_deadline!!.time - System.currentTimeMillis()
@@ -86,6 +99,20 @@ class RecyclerAdapter(var items: ArrayList<DataObject>) : RecyclerView.Adapter<R
                 Glide.with(vh.imageView).load(item.image_url).into(vh.imageView)
                 vh.title.text = item.title
                 vh.channel.text = item.channel_name
+            }
+        }
+    }
+
+    private fun setClickListener(viewHolder: RecyclerViewHolder, position: Int) {
+        viewHolder.itemView.setOnClickListener {
+            when (items[position].type) {
+                DataType.KICKSTARTER -> {
+                    var item = items[position] as Game
+                    var builder = CustomTabsIntent.Builder()
+                    builder.setToolbarColor(activity.resources.getColor(R.color.colorPrimary));
+                    var customTabsIntent = builder.build()
+                    customTabsIntent.launchUrl(activity, Uri.parse(item.kickstarter_url));
+                }
             }
         }
     }
