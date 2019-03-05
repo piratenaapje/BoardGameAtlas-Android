@@ -34,6 +34,9 @@ class GsonRequest<T>(
 
     override fun parseNetworkResponse(response: NetworkResponse?): Response<T> {
         try {
+            if (method == Request.Method.GET) {
+                response?.headers?.put("cache-control", "no-transform, proxy-revalidate, max-age=7200, s-maxage=7200, public")
+            }
             val json = String(
                     response?.data ?: ByteArray(0),
                     Charset.forName(HttpHeaderParser.parseCharset(response?.headers)))
