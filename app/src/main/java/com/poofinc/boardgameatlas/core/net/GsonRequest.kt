@@ -1,9 +1,6 @@
 package com.poofinc.boardgameatlas.core.net
 
-import com.android.volley.NetworkResponse
-import com.android.volley.ParseError
-import com.android.volley.Request
-import com.android.volley.Response
+import com.android.volley.*
 import com.android.volley.toolbox.HttpHeaderParser
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
@@ -29,6 +26,11 @@ class GsonRequest<T>(
 ) : Request<T>(method, url, errorListener) {
     private val gson = Gson()
     override fun getHeaders(): MutableMap<String, String> = super.getHeaders()
+
+    init {
+        var retryPolicy = DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+        setRetryPolicy(retryPolicy)
+    }
 
     override fun deliverResponse(response: T) = listener.onResponse(response)
 

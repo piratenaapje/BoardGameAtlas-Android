@@ -8,9 +8,25 @@
 
 
     <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <FrameLayout
+        android:paddingBottom="10dp"
+        android:paddingTop="?attr/actionBarSize"
         android:id="@+id/fragment_holder"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+
+
+    <android.support.v7.widget.Toolbar
+        app:titleTextColor="#fff"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+    </FrameLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"

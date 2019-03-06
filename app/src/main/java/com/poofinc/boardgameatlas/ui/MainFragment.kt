@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.android.volley.Response
 import com.poofinc.boardgameatlas.R
@@ -28,6 +29,8 @@ abstract class MainFragment : Fragment() {
 
         initializeContent(v.findViewById(R.id.linearLayout), inflater)
 
+
+
         return v
     }
 
@@ -37,9 +40,11 @@ abstract class MainFragment : Fragment() {
             container.findViewById<TextView>(R.id.title).text = request.title
             val recyclerView =  container.findViewById<RecyclerView>(R.id.recyclerview)
             val layoutParams = recyclerView.layoutParams
+            val progress = container.findViewById<ProgressBar>(R.id.progress)
             layoutParams.height = DataType.getHeight(request.type)
             recyclerView.layoutParams = layoutParams
             request.request.onSuccess(Response.Listener {
+                progress.visibility = View.GONE
                 var viewManager = LinearLayoutManager(recyclerView.context, RecyclerView.HORIZONTAL, false)
                 if (it.getItems() != null) {
                     var viewAdapter = RecyclerAdapter(it.getItems()!!, this.activity as Activity)
