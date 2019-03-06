@@ -20,7 +20,7 @@ import com.poofinc.boardgameatlas.ui.adapter.viewholder.VideoViewHolder
 
 
 
-class RecyclerAdapter(var items: ArrayList<DataObject>, var activity: Activity) : RecyclerView.Adapter<RecyclerViewHolder>() {
+class RecyclerAdapter(var items: ArrayList<DataObject>, var activity: Activity, var scalingFactor: Double) : RecyclerView.Adapter<RecyclerViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): RecyclerViewHolder {
         when (items[position].type) {
             DataType.GAME-> {

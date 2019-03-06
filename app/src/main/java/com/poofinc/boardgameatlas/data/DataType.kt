@@ -15,5 +15,14 @@ enum class DataType {
             }
             return 0
         }
+
+        fun getWidth(type: DataType): Int {
+            when (type) {
+                GAME -> return BGAApplication.context.resources.getDimensionPixelSize(R.dimen.card_game_width)
+                KICKSTARTER -> return BGAApplication.context.resources.getDimensionPixelSize(R.dimen.card_game_width)
+                VIDEO -> return BGAApplication.context.resources.getDimensionPixelSize(R.dimen.card_video_width)
+            }
+            return 0
+        }
     }
 }

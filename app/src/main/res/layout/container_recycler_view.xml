@@ -24,7 +24,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/card_game_height"/>
+        android:layout_height="match_parent"/>
 
     <ProgressBar
         android:layout_gravity="center"
