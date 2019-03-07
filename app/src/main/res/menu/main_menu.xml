@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:checkableBehavior="single">
+        <item
+            app:showAsAction="always"
+            android:icon="@drawable/ic_sort"
+            android:id="@+id/sort"
+            android:title="Sort" >
+            <menu>
+                <item
+                    android:id="@+id/sort_option_1"
+                    android:title=""/>
+                <item
+                    android:id="@+id/sort_option_2"
+                    android:title=""/>
+                <item
+                    android:id="@+id/sort_option_3"
+                    android:title=""/>
+                <item
+                    android:id="@+id/sort_option_4"
+                    android:title=""/>
+                <item
+                    android:id="@+id/sort_option_5"
+                    android:title=""/>
+                <item
+                    android:id="@+id/sort_option_6"
+                    android:title=""/>
+                <item
+                    android:id="@+id/sort_option_7"
+                    android:title=""/>
+                <item
+                    android:id="@+id/sort_option_8"
+                    android:title=""/>
+                <item
+                    android:id="@+id/sort_option_9"
+                    android:title=""/>
+            </menu>
+        </item>
+        <item
+            app:showAsAction="always"
+            android:title="Reverse"
+            android:id="@+id/sort_reverse"
+            android:icon="@drawable/ic_reverse"/>
+    </group>
+</menu>

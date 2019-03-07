@@ -4,7 +4,10 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.google.gson.reflect.TypeToken
 import com.poofinc.boardgameatlas.core.API
+import com.poofinc.boardgameatlas.core.game.SearchRequest
+import com.poofinc.boardgameatlas.data.APIResponse
 import com.poofinc.boardgameatlas.data.game.Game
+import com.poofinc.boardgameatlas.data.search.Order
 import java.lang.reflect.Type
 import java.net.URLEncoder
 
@@ -14,6 +17,8 @@ abstract class APIRequest<T> {
     open var type: Type? = null
     open var responseListener: Response.Listener<T> = Response.Listener {  }
     open var errorListener: Response.ErrorListener = Response.ErrorListener {  }
+    var order: Order? = null
+    var reverse = false
 
     var firstParameter = true
 
@@ -44,6 +49,12 @@ abstract class APIRequest<T> {
         }
         apiPath += URLEncoder.encode(key) + "=" + URLEncoder.encode(value)
         firstParameter = false
+        return this
+    }
+
+
+    fun order(value: Order) : APIRequest<T> {
+        order = value
         return this
     }
 }

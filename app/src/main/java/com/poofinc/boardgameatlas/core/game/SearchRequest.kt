@@ -13,17 +13,12 @@ class SearchRequest : APIRequest<SearchResponse>() {
     override var apiPath: String = "search"
     override var responseClass: Class<SearchResponse>? = SearchResponse::class.java
 
-    var order: Order? = null
     private var minRedditWeekCount: Int? = null
     private var maxRedditCount: Int? = null
     private var minAverageUserRating: Float? = null
     private var kickstarter = false
     private var ascending = false
 
-    fun order(value: Order) : SearchRequest {
-        order = value
-        return this
-    }
 
     fun minRedditWeekCount(value: Int) : SearchRequest {
         minRedditWeekCount = value
@@ -66,7 +61,11 @@ class SearchRequest : APIRequest<SearchResponse>() {
         if (kickstarter) {
             addParameter("kickstarter", "true")
         }
-        addParameter("ascending", ascending.toString())
+        if (reverse) {
+            addParameter("ascending", (!ascending).toString())
+        } else {
+            addParameter("ascending", (ascending).toString())
+        }
         super.execute()
     }
 }

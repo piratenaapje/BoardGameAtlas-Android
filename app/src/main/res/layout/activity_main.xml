@@ -21,6 +21,7 @@
 
     <android.support.v7.widget.Toolbar
         app:titleTextColor="#fff"
+        app:subtitleTextColor="#fff"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"

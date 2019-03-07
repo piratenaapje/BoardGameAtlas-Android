@@ -21,16 +21,18 @@ import com.poofinc.boardgameatlas.ui.MainFragment
 import com.poofinc.boardgameatlas.ui.adapter.RecyclerAdapter
 
 class HomeFragment : MainFragment() {
+    override var showSortMenuItem = false
+
     override var requests: ArrayList<Request>
         get() {
             var result = ArrayList<Request>()
             var request = Request()
             request.title = "Trending"
             request.type = DataType.GAME
-            request.request = SearchRequest().order(Order.REDDIT_DAY_COUNT)
+            request.request = SearchRequest()
                     .maxRedditCount(200)
                     .minRedditWeekCount(1)
-                    .minAverageUserRating(3.5f) as APIRequest<APIResponse>
+                    .minAverageUserRating(3.5f).order(Order.REDDIT_DAY_COUNT) as APIRequest<APIResponse>
             result.add(request)
 
             request = Request()

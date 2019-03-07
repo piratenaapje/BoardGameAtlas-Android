@@ -21,6 +21,8 @@ import com.poofinc.boardgameatlas.ui.MainFragment
 import com.poofinc.boardgameatlas.ui.adapter.RecyclerAdapter
 
 class GamesFragment : MainFragment() {
+    override var sortOptions = arrayListOf(Order.POPULARITY, Order.REDDIT_WEEK_COUNT, Order.NAME, Order.PUBLISHER_YEAR)
+
     override var requests: ArrayList<Request>
         get() {
             var result = ArrayList<Request>()
