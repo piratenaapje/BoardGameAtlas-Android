@@ -58,42 +58,74 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.sort_option_1 -> {
                 mFragment?.selectSortOption(0)
+                if (mFragment != null) {
+                    supportActionBar?.subtitle = mFragment!!.sortOptions[0].displayName
+                }
                 true
             }
             R.id.sort_option_2 -> {
                 mFragment?.selectSortOption(1)
+                if (mFragment != null) {
+                    supportActionBar?.subtitle = mFragment!!.sortOptions[1].displayName
+                }
                 true
             }
             R.id.sort_option_3 -> {
                 mFragment?.selectSortOption(2)
+                if (mFragment != null) {
+                    supportActionBar?.subtitle = mFragment!!.sortOptions[2].displayName
+                }
                 true
             }
             R.id.sort_option_4 -> {
                 mFragment?.selectSortOption(3)
+                if (mFragment != null) {
+                    supportActionBar?.subtitle = mFragment!!.sortOptions[3].displayName
+                }
                 true
             }
             R.id.sort_option_5 -> {
                 mFragment?.selectSortOption(4)
+                if (mFragment != null) {
+                    supportActionBar?.subtitle = mFragment!!.sortOptions[4].displayName
+                }
                 true
             }
             R.id.sort_option_6 -> {
                 mFragment?.selectSortOption(5)
+                if (mFragment != null) {
+                    supportActionBar?.subtitle = mFragment!!.sortOptions[5].displayName
+                }
                 true
             }
             R.id.sort_option_7 -> {
                 mFragment?.selectSortOption(6)
+                if (mFragment != null) {
+                    supportActionBar?.subtitle = mFragment!!.sortOptions[6].displayName
+                }
                 true
             }
             R.id.sort_option_8 -> {
                 mFragment?.selectSortOption(7)
+                if (mFragment != null) {
+                    supportActionBar?.subtitle = mFragment!!.sortOptions[7].displayName
+                }
                 true
             }
             R.id.sort_option_9 -> {
                 mFragment?.selectSortOption(8)
+                if (mFragment != null) {
+                    supportActionBar?.subtitle = mFragment!!.sortOptions[8].displayName
+                }
                 true
             }
             R.id.sort_reverse -> {
                 mFragment?.reverseSorting()
+                if (mFragment?.reverse == true) {
+                    item.setIcon(R.drawable.ic_reverse_selected)
+                } else {
+                    item.setIcon(R.drawable.ic_reverse)
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

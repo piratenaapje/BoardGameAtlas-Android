@@ -13,21 +13,29 @@ import java.net.URLEncoder
 
 abstract class APIRequest<T> {
     abstract var apiPath: String
+    var parameters: String = ""
     open var responseClass: Class<T>? = null
     open var type: Type? = null
     open var responseListener: Response.Listener<T> = Response.Listener {  }
     open var errorListener: Response.ErrorListener = Response.ErrorListener {  }
     var order: Order? = null
     var reverse = false
+    var offset = 0
 
     var firstParameter = true
 
     open fun execute() {
-        var url = API.location + apiPath + "&client_id=" + API.clientId
+        addParameter("client_id", API.clientId)
+        var url = API.location + apiPath + parameters
 
         var request = GsonRequest<T>(Request.Method.GET, url, responseClass, type,  responseListener, errorListener)
 
         NetworkQueue.getInstance().addToRequestQueue(request)
+    }
+
+    fun clearParameters() {
+        firstParameter = true
+        parameters = ""
     }
 
     fun onError(listener: Response.ErrorListener) : APIRequest<T> {
@@ -43,11 +51,11 @@ abstract class APIRequest<T> {
 
     fun addParameter(key: String, value: String) : APIRequest<T> {
         if (firstParameter) {
-            apiPath += "?"
+            parameters += "?"
         } else {
-            apiPath += "&"
+            parameters += "&"
         }
-        apiPath += URLEncoder.encode(key) + "=" + URLEncoder.encode(value)
+        parameters += URLEncoder.encode(key) + "=" + URLEncoder.encode(value)
         firstParameter = false
         return this
     }
@@ -55,6 +63,11 @@ abstract class APIRequest<T> {
 
     fun order(value: Order) : APIRequest<T> {
         order = value
+        return this
+    }
+
+    fun offset(value: Int) : APIRequest<T> {
+        offset = value
         return this
     }
 }

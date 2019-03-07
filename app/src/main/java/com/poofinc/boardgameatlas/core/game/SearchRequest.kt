@@ -46,6 +46,7 @@ class SearchRequest : APIRequest<SearchResponse>() {
     }
 
     override fun execute() {
+        clearParameters()
         if (order != null) {
             addParameter("order_by", order!!.value)
         }
@@ -65,6 +66,10 @@ class SearchRequest : APIRequest<SearchResponse>() {
             addParameter("ascending", (!ascending).toString())
         } else {
             addParameter("ascending", (ascending).toString())
+        }
+        addParameter("limit", 100.toString())
+        if (offset > 0) {
+            addParameter("skip", offset.toString())
         }
         super.execute()
     }

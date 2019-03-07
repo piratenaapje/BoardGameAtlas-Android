@@ -36,7 +36,8 @@ abstract class MainFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var progress: ProgressBar
     private var firstLoad = true
-    private var reverse = false
+    var reverse = false
+    var order: Order? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_main, container, false)
@@ -64,32 +65,66 @@ abstract class MainFragment : Fragment() {
         }
     }
 
-    private fun performRequest(request: APIRequest<APIResponse>, type: DataType, recyclerView: RecyclerView, progress: ProgressBar) {
-        recyclerView.adapter = null
-        progress.visibility = View.VISIBLE
-        request.onSuccess(Response.Listener {
-            progress.visibility = View.GONE
-            var viewManager : RecyclerView.LayoutManager
-            var scalingFactor = 1.0
-            if (requests.size > 1) {
-                viewManager = LinearLayoutManager(recyclerView.context, RecyclerView.HORIZONTAL, false)
-            } else {
-                var width = DataType.getWidth(type)
-                val displayMetrics = context?.getResources()?.displayMetrics
-                val screenWidth = displayMetrics!!.widthPixels
-                val noOfColumns = (screenWidth / width + 0.5).toInt()
-                var offset = width - (screenWidth / noOfColumns + 0.5)
-                viewManager = GridLayoutManager(recyclerView.context, noOfColumns)
-                val itemDecoration = ItemOffsetDecoration(recyclerView.context, (-offset/2).roundToInt())
-                if (firstLoad) {
-                    recyclerView.addItemDecoration(itemDecoration)
-                    recyclerView.setPadding(0, 0, 0, 0)
+    private fun performRequest(request: APIRequest<APIResponse>, type: DataType, recyclerView: RecyclerView, progress: ProgressBar, offset: Int = 0) {
+        if (offset == 0) {
+            recyclerView.adapter = null
+            progress.visibility = View.VISIBLE
+        }
+        request.reverse = reverse
+        if (order != null) {
+            request.order(order!!)
+        }
+        request.offset(offset).onSuccess(Response.Listener {
+            if (offset == 0) {
+                progress.visibility = View.GONE
+                var viewManager: RecyclerView.LayoutManager
+                var scalingFactor = 1.0
+                if (requests.size > 1) {
+                    viewManager = LinearLayoutManager(recyclerView.context, RecyclerView.HORIZONTAL, false)
+                } else {
+                    var width = DataType.getWidth(type)
+                    val displayMetrics = context?.getResources()?.displayMetrics
+                    val screenWidth = displayMetrics!!.widthPixels
+                    val noOfColumns = (screenWidth / width + 0.5).toInt()
+                    var offset = width - (screenWidth / noOfColumns + 0.5)
+                    viewManager = GridLayoutManager(recyclerView.context, noOfColumns)
+                    val itemDecoration = ItemOffsetDecoration(recyclerView.context, (-offset / 2).roundToInt())
+                    if (firstLoad) {
+                        recyclerView.addItemDecoration(itemDecoration)
+                        recyclerView.setPadding(0, 0, 0, 0)
+                    }
                 }
+                if (it.getItems() != null) {
+                    var viewAdapter = RecyclerAdapter(it.getItems()!!, this.activity as Activity, scalingFactor)
+                    recyclerView.layoutManager = viewManager
+                    recyclerView.adapter = viewAdapter
+                }
+            } else if (it.getItems() != null){
+                (recyclerView.adapter as RecyclerAdapter).addItems(it.getItems()!!)
             }
-            if (it.getItems() != null) {
-                var viewAdapter = RecyclerAdapter(it.getItems()!!, this.activity as Activity, scalingFactor)
-                recyclerView.layoutManager = viewManager
-                recyclerView.adapter = viewAdapter
+
+            recyclerView.clearOnScrollListeners()
+            if (it.getItems()?.size == 100) {
+                recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    private var isLoading = false
+
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        if (isLoading)
+                            return
+                        val visibleItemCount = recyclerView.layoutManager!!.getChildCount()
+                        val totalItemCount = recyclerView.layoutManager!!.getItemCount()
+                        var pastVisibleItems = 0
+                        if (recyclerView.layoutManager!! is LinearLayoutManager) {
+                            pastVisibleItems = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                        } else if (recyclerView.layoutManager!! is GridLayoutManager) {
+                            pastVisibleItems = (recyclerView.layoutManager as GridLayoutManager).findFirstVisibleItemPosition()
+                        }
+                        if (pastVisibleItems + visibleItemCount >= totalItemCount - 10) {
+                            isLoading = true
+                            performRequest(request, type, recyclerView, progress, offset + 100)
+                        }
+                    }
+                })
             }
             firstLoad = false
 
@@ -98,18 +133,15 @@ abstract class MainFragment : Fragment() {
 
     fun selectSortOption(index: Int) {
         if (requests.size == 1) {
-            var request = requests[0]
-            request.request = request.request.order(sortOptions[index]) as APIRequest<APIResponse>
-            performRequest(request.request, request.type, recyclerView, progress)
+            order = sortOptions[index]
+            performRequest(requests[0].request, requests[0].type, recyclerView, progress)
         }
     }
 
     fun reverseSorting() {
         if (requests.size == 1) {
             reverse = !reverse
-            var request = requests[0]
-            request.request.reverse = reverse
-            performRequest(request.request, request.type, recyclerView, progress)
+            performRequest(requests[0].request, requests[0].type, recyclerView, progress)
         }
     }
 

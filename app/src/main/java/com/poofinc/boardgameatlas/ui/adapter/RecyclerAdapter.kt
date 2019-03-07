@@ -39,6 +39,12 @@ class RecyclerAdapter(var items: ArrayList<DataObject>, var activity: Activity, 
         }
     }
 
+    fun addItems(add: ArrayList<DataObject>) {
+        var oldSize = items.size
+        items.addAll(add)
+        notifyItemRangeInserted(oldSize, add.size)
+    }
+
     override fun getItemCount(): Int {
         if (items == null) {
             return 0
