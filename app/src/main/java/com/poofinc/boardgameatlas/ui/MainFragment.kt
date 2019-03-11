@@ -26,12 +26,14 @@ import kotlinx.android.synthetic.main.container_recycler_view.*
 import kotlin.math.roundToInt
 import com.poofinc.boardgameatlas.ui.adapter.ItemOffsetDecoration
 import android.view.Menu
+import android.widget.FrameLayout
 import com.poofinc.boardgameatlas.data.APIResponse
 
 
 abstract class MainFragment : Fragment() {
     abstract var requests: ArrayList<Request>
     open var showSortMenuItem = true
+    open var showSortReverseMenuItem = true
     open var sortOptions = ArrayList<Order>()
     private lateinit var recyclerView: RecyclerView
     private lateinit var progress: ProgressBar
@@ -50,9 +52,9 @@ abstract class MainFragment : Fragment() {
             val container = inflater.inflate(R.layout.container_recycler_view, v, false)
             container.findViewById<TextView>(R.id.title).text = request.title
             recyclerView =  container.findViewById<RecyclerView>(R.id.recyclerview)
-            val layoutParams = recyclerView.layoutParams
             progress = container.findViewById<ProgressBar>(R.id.progress)
             if (requests.size > 1) {
+                val layoutParams = recyclerView.layoutParams
                 layoutParams.height = DataType.getHeight(request.type)
                 recyclerView.layoutParams = layoutParams
             } else {
@@ -85,8 +87,12 @@ abstract class MainFragment : Fragment() {
                     var width = DataType.getWidth(type)
                     val displayMetrics = context?.getResources()?.displayMetrics
                     val screenWidth = displayMetrics!!.widthPixels
-                    val noOfColumns = (screenWidth / width + 0.5).toInt()
-                    var offset = width - (screenWidth / noOfColumns + 0.5)
+                    var noOfColumns = 1
+                    var offset = 0.0
+                    if (width != 0) {
+                        noOfColumns = (screenWidth / width + 0.5).toInt()
+                        offset = width - (screenWidth / noOfColumns + 0.5)
+                    }
                     viewManager = GridLayoutManager(recyclerView.context, noOfColumns)
                     val itemDecoration = ItemOffsetDecoration(recyclerView.context, (-offset / 2).roundToInt())
                     if (firstLoad) {

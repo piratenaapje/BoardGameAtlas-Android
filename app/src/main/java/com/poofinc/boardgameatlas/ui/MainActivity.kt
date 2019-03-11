@@ -11,11 +11,10 @@ import com.android.volley.Response
 import com.poofinc.boardgameatlas.R
 import com.poofinc.boardgameatlas.core.game.SearchRequest
 import com.poofinc.boardgameatlas.data.search.Order
-import com.poofinc.boardgameatlas.ui.fragment.HomeFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import android.support.design.widget.NavigationView
 import android.view.Menu
-import com.poofinc.boardgameatlas.ui.fragment.GamesFragment
+import com.poofinc.boardgameatlas.ui.fragment.*
 
 class MainActivity : AppCompatActivity() {
     var mFragment: MainFragment? = null
@@ -42,6 +41,9 @@ class MainActivity : AppCompatActivity() {
                 when (it.itemId) {
                     R.id.home -> openPage(HomeFragment(), "Home", null)
                     R.id.games -> openPage(GamesFragment(), "Games", null)
+                    R.id.kickstarters -> openPage(KickstarterFragment(), "Kickstarters", null)
+                    R.id.news -> openPage(NewsFragment(), "News", null)
+                    R.id.forum -> openPage(ForumFragment(), "Forum", null)
                 }
             }
 
@@ -163,6 +165,9 @@ class MainActivity : AppCompatActivity() {
             sortItem.isVisible = false
             reverseItem.isVisible = false
         } else if (mFragment != null){
+            if (mFragment?.showSortReverseMenuItem == false) {
+                reverseItem.isVisible = false
+            }
             for (i in 0 until sortItem.subMenu.size()) {
                 if (i < mFragment?.sortOptions!!.size) {
                     sortItem.subMenu.getItem(i).title = mFragment!!.sortOptions[i].displayName

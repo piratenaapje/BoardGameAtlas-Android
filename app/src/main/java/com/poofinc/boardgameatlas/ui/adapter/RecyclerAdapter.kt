@@ -11,13 +11,10 @@ import com.bumptech.glide.Glide
 import com.poofinc.boardgameatlas.R
 import com.poofinc.boardgameatlas.data.DataObject
 import com.poofinc.boardgameatlas.data.DataType
+import com.poofinc.boardgameatlas.data.forum.ForumPost
 import com.poofinc.boardgameatlas.data.game.Game
 import com.poofinc.boardgameatlas.data.video.Video
-import com.poofinc.boardgameatlas.ui.adapter.viewholder.GameViewHolder
-import com.poofinc.boardgameatlas.ui.adapter.viewholder.KickstarterViewHolder
-import com.poofinc.boardgameatlas.ui.adapter.viewholder.RecyclerViewHolder
-import com.poofinc.boardgameatlas.ui.adapter.viewholder.VideoViewHolder
-
+import com.poofinc.boardgameatlas.ui.adapter.viewholder.*
 
 
 class RecyclerAdapter(var items: ArrayList<DataObject>, var activity: Activity, var scalingFactor: Double) : RecyclerView.Adapter<RecyclerViewHolder>() {
@@ -34,6 +31,10 @@ class RecyclerAdapter(var items: ArrayList<DataObject>, var activity: Activity, 
             DataType.VIDEO-> {
                 val v = LayoutInflater.from(parent.context).inflate(R.layout.card_video, parent, false)
                 return VideoViewHolder(v)
+            }
+            DataType.FORUMPOST -> {
+                val v = LayoutInflater.from(parent.context).inflate(R.layout.card_forumpost, parent, false)
+                return ForumPostViewHolder(v)
             }
             else -> return GameViewHolder(parent)
         }
@@ -105,6 +106,34 @@ class RecyclerAdapter(var items: ArrayList<DataObject>, var activity: Activity, 
                 Glide.with(vh.imageView).load(item.image_url).into(vh.imageView)
                 vh.title.text = item.title
                 vh.channel.text = item.channel_name
+            }
+            DataType.FORUMPOST -> {
+                var vh = viewHolder as ForumPostViewHolder
+                var item = items[position] as ForumPost
+                Glide.with(vh.image).load(item.image).into(vh.image)
+                vh.title.text = item.title
+                vh.upvotes.text = item.likes.toString() + " likes"
+                vh.comments.text = item.comments.toString() + " comments"
+                if (item.user?.username != null) {
+                    vh.user.text = item.user!!.username!!
+                }
+
+                if (item.created != null) {
+                    val diff = System.currentTimeMillis() - item.created!!.time
+                    val seconds = diff / 1000
+                    val minutes = seconds / 60
+                    val hours = minutes / 60
+                    val days = hours / 24
+                    val weeks = days / 7
+
+                    when {
+                        weeks > 5 -> vh.date.text = weeks.toString() + " weeks ago"
+                        days > 0 -> vh.date.text = days.toString() + " days ago"
+                        hours > 0 -> vh.date.text = hours.toString() + " hours ago"
+                        minutes > 0 -> vh.date.text = minutes.toString() + " minutes ago"
+                        seconds > 0 -> vh.date.text = seconds.toString() + " seconds ago"
+                    }
+                }
             }
         }
     }

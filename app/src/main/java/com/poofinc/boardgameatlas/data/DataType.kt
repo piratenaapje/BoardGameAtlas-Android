@@ -4,7 +4,7 @@ import com.poofinc.boardgameatlas.R
 import com.poofinc.boardgameatlas.ui.util.BGAApplication
 
 enum class DataType {
-    GAME, REVIEW, VIDEO, KICKSTARTER;
+    GAME, REVIEW, VIDEO, KICKSTARTER, FORUMPOST, USER;
 
     companion object {
         fun getHeight(type: DataType): Int {
