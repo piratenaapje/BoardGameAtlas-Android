@@ -14,10 +14,16 @@ class ForumRequest : APIRequest<ForumResponse>() {
     override var apiPath: String = "forum"
     override var responseClass: Class<ForumResponse>? = ForumResponse::class.java
     private var news = false
+    private var flair : String? = null
 
 
     fun news() : ForumRequest {
         news = true
+        return this
+    }
+
+    fun flair(name: String) : ForumRequest {
+        flair = name
         return this
     }
 
@@ -29,6 +35,10 @@ class ForumRequest : APIRequest<ForumResponse>() {
         addParameter("limit", 100.toString())
         if (offset > 0) {
             addParameter("skip", offset.toString())
+        }
+
+        if (flair != null) {
+            addParameter("flair", flair!!)
         }
         super.execute()
     }

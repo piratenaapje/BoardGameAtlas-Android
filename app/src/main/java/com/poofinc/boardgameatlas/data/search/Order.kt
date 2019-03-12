@@ -14,5 +14,7 @@ enum class Order(val value: String, val displayName: String) {
     MIN_PLAYERS("min_players", "Minimum players"),
     MAX_PLAYERS("max_players", "Maximum players"),
     DEADLINE("deadline", "Deadline"),
-    RECENT("popularity", "Recent")
+    RECENT("popularity", "Recent"),
+    CREATED("published_date", "Recent"),
+    VIEW_COUNT("view_count", "Views")
 }

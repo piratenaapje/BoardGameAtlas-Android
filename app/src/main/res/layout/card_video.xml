@@ -5,6 +5,8 @@
     android:layout_height="@dimen/card_video_height"
     android:layout_marginRight="5dp"
     app:cardUseCompatPadding="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
         android:layout_width="match_parent"

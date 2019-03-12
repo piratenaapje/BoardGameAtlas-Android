@@ -13,10 +13,19 @@ class VideoRequest : APIRequest<VideoResponse>() {
     override var type: Type? = null
     override var apiPath: String = "game/videos"
     override var responseClass: Class<VideoResponse>? = VideoResponse::class.java
+    var ascending = false
 
     override fun execute() {
-        addParameter("order_by", "published_date")
+        if (order != null) {
+            addParameter("order_by", order!!.value)
+        }
         addParameter("limit", "100")
+        if (reverse) {
+            addParameter("ascending", (!ascending).toString())
+        } else {
+            addParameter("ascending", (ascending).toString())
+        }
+
         super.execute()
     }
 }

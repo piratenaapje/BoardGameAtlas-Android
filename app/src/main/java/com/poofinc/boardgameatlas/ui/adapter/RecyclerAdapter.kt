@@ -148,6 +148,13 @@ class RecyclerAdapter(var items: ArrayList<DataObject>, var activity: Activity, 
                     var customTabsIntent = builder.build()
                     customTabsIntent.launchUrl(activity, Uri.parse(item.kickstarter_url));
                 }
+                DataType.VIDEO -> {
+                    var item = items[position] as Video
+                    var builder = CustomTabsIntent.Builder()
+                    builder.setToolbarColor(activity.resources.getColor(R.color.colorPrimary));
+                    var customTabsIntent = builder.build()
+                    customTabsIntent.launchUrl(activity, Uri.parse(item.url));
+                }
             }
         }
     }

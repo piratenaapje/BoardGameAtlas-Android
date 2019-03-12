@@ -44,6 +44,8 @@ class MainActivity : AppCompatActivity() {
                     R.id.kickstarters -> openPage(KickstarterFragment(), "Kickstarters", null)
                     R.id.news -> openPage(NewsFragment(), "News", null)
                     R.id.forum -> openPage(ForumFragment(), "Forum", null)
+                    R.id.videos -> openPage(VideosFragment(), "Videos", null)
+                    R.id.reviews -> openPage(ReviewsFragment(), "Reviews", null)
                 }
             }
 
